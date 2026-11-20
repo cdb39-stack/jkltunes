@@ -77,3 +77,37 @@ Christopher Bennett proposed JKL Tunes as a personal music library: view tracks 
 - What server interaction will satisfy the Express-route requirement while respecting the no-upload rule?
 - Which streaming services and metadata sources, if any, are allowed for playlist import and cover lookup?
 - What should the main screen sketch and exact minimum scope be?
+
+## 2026-11-19 — Professor approval and hosting feasibility
+
+### Context
+
+Christopher clarified that the professor allows YouTube downloading and file uploads for this project, provided Vercel allows the implementation; localhost is an acceptable fallback. This resolves the course assignment's blanket no-upload restriction for this project, but hosting limits and the source platform's terms remain separate constraints.
+
+### Decisions
+
+- Treat professor approval as permission under the course rules to explore uploads; it does not grant rights to third-party recordings or override YouTube's terms.
+- Do not use `yt-dlp` to download arbitrary YouTube music. YouTube's Terms restrict downloading content except when the service authorizes it or the relevant permissions exist. Restrict any downloader experiment to content for which both platform terms and rights-holder authorization permit downloading.
+- Do not route normal audio uploads through a Vercel Function. Vercel currently documents a 4.5 MB maximum request and response payload. For larger uploads, use direct client uploads to Blob or another storage service, after verifying free-tier quotas and payment requirements.
+- Do not use a Vercel Function's local filesystem as the music library: it is not persistent. Hosted persistence requires a storage product. If the project must avoid external storage, localhost is the practical option for full-size uploads and persistent local files, but it will not by itself satisfy the assignment's public deployment requirement.
+- Keep the deployment decision open until a small Vercel upload proof of concept confirms actual size, persistence, free-tier, and deployment behavior. Consider a public Vercel demo with a clear size cap only if it still demonstrates the required core use case; otherwise retain a compliant public demo alongside localhost development.
+
+### Alternatives considered
+
+- **Upload audio through the Express Function body:** not selected for normal music files because requests and responses are capped at 4.5 MB.
+- **Write uploaded files to the Vercel Function's local disk:** not selected because writes are temporary and do not provide a persistent library.
+- **Run the entire app only on localhost:** retained as a fallback for file handling, but insufficient by itself as the assignment's final deliverable because it requires a public URL.
+- **Use `yt-dlp` for all YouTube URLs:** not selected because professor approval does not settle YouTube terms or rights-holder authorization.
+
+### Tradeoffs / consequences
+
+- Hosted uploads are possible with a direct-to-object-storage design, but introduce storage setup, access control, quota, and possible cost concerns.
+- Localhost simplifies audio storage and experimentation but reduces access to the app and does not meet the public deployment requirement alone.
+- The downloader feature needs a rights/terms-compliant source scope, which may substantially narrow its inputs.
+
+### Open questions
+
+- Can Vercel Blob or another storage service meet the project's size needs within a free plan without a credit card?
+- What maximum audio file size and allowed formats should the app support?
+- Will downloads be limited to the user's own content or other content with explicit authorization?
+- Can Vercel-hosted metadata and playback links to locally stored audio demonstrate the required public app use case, or is another public storage approach needed?

@@ -7,9 +7,9 @@
 - **Group members:** Christopher Bennett (confirm whether there are additional group members).
 - **Intended users and current alternatives:** Music listeners who want to organize and play music they already have permission to use, without ads in their personal library. Current alternatives were not specified.
 - **Main user flow:** View the library and playlists; add a track; play it; edit its title, cover reference, or playlist membership.
-- **Minimum version:** A responsive music library that organizes and plays user-provided tracks. The assignment prohibits file uploads, so the storage/upload portion needs an instructor-approved, compliant design before implementation. Ensure the required Express route still receives a request and returns a response.
-- **Server routes:** Proposed audio and cover-image upload routes conflict with the assignment's no-file-uploads rule. Redesign routes around validated metadata or another instructor-approved approach before implementation.
-- **Additional features:** Playlist import from a streaming service; automatic track metadata and cover lookup. Do not download audio from third-party services unless the source explicitly authorizes it and the method complies with its terms and the assignment.
+- **Minimum version:** A responsive music library that organizes, stores, and plays user-provided tracks, subject to a viable storage design on the chosen host.
+- **Server routes:** Planned audio ingestion/playback and cover-art routes. Validate file type, size, and malformed input. For Vercel, do not proxy typical audio uploads through a Function: its documented request and response payload limit is 4.5 MB, and function disk writes are not persistent. Evaluate direct object-storage uploads for Vercel or use localhost for full-size local storage.
+- **Additional features:** Playlist import from a streaming service; automatic track metadata and cover lookup. `yt-dlp` is not a general-purpose YouTube music source: use it only for content where downloading is authorized by YouTube and the rights holder and complies with applicable terms.
 - **Advanced features:** Not assigned; confirm group size and one feature per member.
 - **Main screen sketch:** Not supplied yet.
 - **Main technical risk and fallback:** Browser playback compatibility. Test supported audio formats; show a clear unsupported-format error and let the user select another authorized file. Do not search for or download a replacement recording without authorization.
@@ -21,8 +21,9 @@
 - Use plain HTML, CSS, and browser JavaScript. Do not add a front-end framework.
 - Reject empty, oversized, and malformed user input on the server. The interface must show useful error messages.
 - Read keys, passwords, and other secrets from environment variables. Never put secrets in source control; `.env` must be excluded by `.gitignore`.
-- Do not add file uploads, sensitive personal data, paid APIs, or paid services. Images, if needed, are referenced by URL.
-- Treat user-provided audio as content the user must have rights to use. Do not build functionality that retrieves copyrighted recordings from YouTube or other services without authorization. Prefer metadata lookup and user-authorized source links; never bypass service restrictions.
+- File uploads are allowed for this project by professor approval, subject to hosting limits. Do not add sensitive personal data, paid APIs, or paid services. Confirm storage quotas and payment requirements before choosing a hosted file store.
+- Treat user-provided audio as content the user must have rights to use. Professor approval does not override platform terms or rights-holder permission. Do not build functionality that retrieves copyrighted recordings from YouTube or other services without authorization. Prefer metadata lookup and user-authorized source links; never bypass service restrictions.
+- Vercel Functions have a documented 4.5 MB maximum request and response payload. Their function filesystem is not persistent; use an approved persistent object store for hosted audio or operate locally. Confirm free-tier quotas and payment requirements before selecting any storage service.
 - Use only free service plans and never enter a credit card for this project.
 - Any database connection string must be read from `process.env.DATABASE_URL`; parameterize all SQL.
 - If accounts are approved and implemented, hash passwords with bcrypt and store sessions in the database, not server memory.
