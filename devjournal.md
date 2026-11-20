@@ -42,3 +42,38 @@ The repository is named `jkltunes`, contains only a minimal `README.md`, and is 
 **Tradeoffs / consequences:** What does the choice enable or make harder?
 
 **Open questions:** What still needs an answer?
+
+## 2026-11-19 — JKL Tunes proposal and content boundaries
+
+### Context
+
+Christopher Bennett proposed JKL Tunes as a personal music library: view tracks and playlists, add music, play tracks, and edit track details such as title, cover art, and playlist membership. Proposed additional features are importing a playlist from a streaming service and automatically identifying track metadata and cover art. The stated technical risk is playback incompatibility. The proposal also mentions using `yt-dlp` to populate the library from YouTube.
+
+### Decisions
+
+- Record JKL Tunes as the application name and Christopher Bennett as a group member; the group size still needs confirmation.
+- Frame the intended use as organizing and playing music the user is authorized to use. This makes the project about a personal library rather than a way to bypass ads or payment for third-party recordings.
+- Do not plan a YouTube audio downloader. `yt-dlp` could retrieve recordings without rights or in ways restricted by the source service. The project should not retrieve copyrighted audio absent explicit authorization and should respect service terms. Metadata lookup or links to authorized sources are safer possible directions for the advanced feature.
+- Do not implement audio or image upload routes as currently described until the assignment conflict is resolved: its supplied requirements explicitly say “No file uploads.” The current route idea would receive files, so the proposal needs an instructor-approved adjustment or a design that uses permitted inputs.
+- Use image URLs for cover art if the assignment's no-upload rule remains in force.
+- Address playback failure by validating format and showing a clear error, then letting the user choose another authorized file. Searching the internet for a replacement copy is not an appropriate fallback without rights to retrieve it.
+
+### Alternatives considered
+
+- **Use `yt-dlp` to populate tracks from YouTube:** not selected because the idea does not establish authorization to download those recordings or compliance with YouTube's terms. This is also outside the assignment's stated no-file-upload model if downloaded files are uploaded to the app.
+- **Keep the proposed file-receiving routes unchanged:** deferred because they conflict directly with the assignment's no-file-uploads constraint.
+- **Replace a failed track with a copy found online:** not selected because availability online does not establish permission to download or redistribute it.
+
+### Tradeoffs / consequences
+
+- The intended private-library experience remains, but persistent server-side audio storage and upload-based import are not implementation decisions yet.
+- The required Express route can be designed around validated metadata or another instructor-approved interaction, preserving the server requirement without prematurely violating the upload restriction.
+- Playlist import should be scoped to permitted playlist metadata and authorized sources unless the instructor approves a different approach.
+
+### Open questions
+
+- Is Christopher the only group member? Which advanced feature(s) are assigned?
+- Does the instructor allow user-selected audio to be played locally in the browser, even though server uploads are prohibited?
+- What server interaction will satisfy the Express-route requirement while respecting the no-upload rule?
+- Which streaming services and metadata sources, if any, are allowed for playlist import and cover lookup?
+- What should the main screen sketch and exact minimum scope be?

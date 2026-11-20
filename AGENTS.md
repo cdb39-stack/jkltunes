@@ -2,16 +2,17 @@
 
 ## Project proposal
 
-- **Application name:** jkltunes (working repository name; confirm the approved application name)
-- **Description:** To be filled in after the group’s idea is approved.
-- **Group members:** To be completed by the group.
-- **Intended users and current alternatives:** To be defined.
-- **Main user flow:** To be defined.
-- **Minimum version:** A responsive, interactive front end that sends a request to an Express route, shows the response, and handles invalid input; deployed publicly on Vercel.
-- **Server routes:** To be specified with the proposal and implementation.
-- **Additional and advanced features:** To be prioritized and assigned per group member.
-- **Main screen sketch:** To be added after the interface is proposed.
-- **Main technical risk and fallback:** To be identified with the proposal.
+- **Application name:** JKL Tunes
+- **Description:** A personal music library for organizing and playing music the user is authorized to use, with playlists and editable track details.
+- **Group members:** Christopher Bennett (confirm whether there are additional group members).
+- **Intended users and current alternatives:** Music listeners who want to organize and play music they already have permission to use, without ads in their personal library. Current alternatives were not specified.
+- **Main user flow:** View the library and playlists; add a track; play it; edit its title, cover reference, or playlist membership.
+- **Minimum version:** A responsive music library that organizes and plays user-provided tracks. The assignment prohibits file uploads, so the storage/upload portion needs an instructor-approved, compliant design before implementation. Ensure the required Express route still receives a request and returns a response.
+- **Server routes:** Proposed audio and cover-image upload routes conflict with the assignment's no-file-uploads rule. Redesign routes around validated metadata or another instructor-approved approach before implementation.
+- **Additional features:** Playlist import from a streaming service; automatic track metadata and cover lookup. Do not download audio from third-party services unless the source explicitly authorizes it and the method complies with its terms and the assignment.
+- **Advanced features:** Not assigned; confirm group size and one feature per member.
+- **Main screen sketch:** Not supplied yet.
+- **Main technical risk and fallback:** Browser playback compatibility. Test supported audio formats; show a clear unsupported-format error and let the user select another authorized file. Do not search for or download a replacement recording without authorization.
 
 ## Required architecture and constraints
 
@@ -21,6 +22,7 @@
 - Reject empty, oversized, and malformed user input on the server. The interface must show useful error messages.
 - Read keys, passwords, and other secrets from environment variables. Never put secrets in source control; `.env` must be excluded by `.gitignore`.
 - Do not add file uploads, sensitive personal data, paid APIs, or paid services. Images, if needed, are referenced by URL.
+- Treat user-provided audio as content the user must have rights to use. Do not build functionality that retrieves copyrighted recordings from YouTube or other services without authorization. Prefer metadata lookup and user-authorized source links; never bypass service restrictions.
 - Use only free service plans and never enter a credit card for this project.
 - Any database connection string must be read from `process.env.DATABASE_URL`; parameterize all SQL.
 - If accounts are approved and implemented, hash passwords with bcrypt and store sessions in the database, not server memory.
